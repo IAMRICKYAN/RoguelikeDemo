@@ -23,6 +23,11 @@ public:
 	ASCharacter();
 
 protected:
+
+	FTimerHandle AttackTimerHandle;
+
+	float Intime;
+	
 	UPROPERTY(VisibleAnywhere,Category = "Components" )
 	TObjectPtr<USpringArmComponent> SpringArmComp;
 
@@ -45,6 +50,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
 	TObjectPtr<UInputAction> Input_Jump;
 
+	//Attack
+	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Attack")
+	TObjectPtr<UInputAction> Input_Attack;
+
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TObjectPtr<UAnimMontage> AttackAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TSubclassOf<AActor> ProjectileClass;
+
+	virtual  void PostInitializeComponents() override;
 	
 	virtual void BeginPlay() override;
 
@@ -55,8 +71,13 @@ public:
 
 	void Action_Move(const FInputActionValue& InputValue);
 
-	void Action_LookMouse(const FInputActionValue& InputValue);
+	void Action_LookMouse(const FInputActionValue& InputValue);\
 
+	void Action_PrimaryAttack();
+
+	void Action_PrimaryAttack_Elapsed();
+
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 	
 
 };

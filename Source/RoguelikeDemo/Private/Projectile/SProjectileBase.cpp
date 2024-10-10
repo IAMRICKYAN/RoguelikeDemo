@@ -32,6 +32,8 @@ ASProjectileBase::ASProjectileBase()
 	MovementComp->bInitialVelocityInLocalSpace = true;
 	MovementComp->Bounciness = 0.3f;
 	MovementComp->ProjectileGravityScale = 0.0f;
+
+	
 }
 
 void ASProjectileBase::PostInitializeComponents()
