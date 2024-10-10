@@ -4,6 +4,7 @@
 #include "RoguelikeDemo/Public/SCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -15,6 +16,9 @@ ASCharacter::ASCharacter()
 	SpringArmComp=CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->bUsePawnControlRotation = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 
 	CameraComp=CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
@@ -36,39 +40,11 @@ void ASCharacter::Tick(float DeltaTime)
 
 }
 
-void ASCharacter::Action_ControllerYaw(const FInputActionValue& Value)
-{
-	AddControllerYawInput(Value.Get<float>());
-} 
-
-void ASCharacter::Action_ControllerPitch(const FInputActionValue& Value)
-{
-	AddControllerPitchInput(Value.Get<float>());
-}
-
-void ASCharacter::Action_ForwardMove(const FInputActionValue& Value)
-{
-	AddMovementInput(GetActorForwardVector(),Value.Get<float>());
-}
-
-void ASCharacter::Action_RightMove(const FInputActionValue& Value)
-{
-	AddMovementInput(GetActorRightVector(),Value.Get<float>());
-}
-
 
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	/*PlayerInputComponent->BindAxis("MoveForward",this,&ASCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight",this,&ASCharacter::MoveRight);
-
-	//转向取决于偏航角Yaw
-	PlayerInputComponent->BindAxis("Turn",this,&APawn::AddControllerYawInput);
-	//抬头低头取决于仰俯角Pitch
-	PlayerInputComponent->BindAxis("LookUp",this,&APawn::AddControllerPitchInput);*/
-
+	
 	if(APlayerController* PlayerController = CastChecked<APlayerController>(GetController()))
 	{
 		if(UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -82,18 +58,36 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	//映射文件添加好后，我们还要与我们的Action进行绑定
 	if(UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(ControlYaw,ETriggerEvent::Triggered,this,&ASCharacter::Action_ControllerYaw);
-		EnhancedInputComponent->BindAction(ControlPitch,ETriggerEvent::Triggered,this,&ASCharacter::Action_ControllerPitch);
-		EnhancedInputComponent->BindAction(ForwardMove,ETriggerEvent::Triggered,this,&ASCharacter::Action_ForwardMove);
-		EnhancedInputComponent->BindAction(RightMove,ETriggerEvent::Triggered,this,&ASCharacter::Action_RightMove);
+		EnhancedInputComponent->BindAction(Input_LookMouse,ETriggerEvent::Triggered,this,&ASCharacter::Action_LookMouse);
+		EnhancedInputComponent->BindAction(Input_Move,ETriggerEvent::Triggered,this,&ASCharacter::Action_Move);
+		EnhancedInputComponent->BindAction(Input_Jump,ETriggerEvent::Triggered,this,&ACharacter::Jump);
 	}
-	
-	
-	
-	
-
 }
 
+void ASCharacter::Action_Move(const FInputActionValue& InputValue)
+{
+	FRotator ControlRot = GetControlRotation();
+	//只与偏航角Yaw有关，其余设置为0
+	ControlRot.Pitch = 0.0f;
+	ControlRot.Roll = 0.0f;
+
+	//从输入得到二维向量
+	const FVector2D AxisValue = InputValue.Get<FVector2D>();
+
+	//前后移动
+	AddMovementInput(ControlRot.Vector(),AxisValue.Y);
+
+	//左右移动
+	const FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+	AddMovementInput(RightVector,AxisValue.X);
+}
+
+void ASCharacter::Action_LookMouse(const FInputActionValue& InputValue)
+{
+	const FVector2d Value = InputValue.Get<FVector2d>();
+	AddControllerYawInput(Value.X);
+	AddControllerPitchInput(Value.Y);
+}
 
 
 

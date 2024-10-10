@@ -37,16 +37,14 @@ protected:
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
-	TObjectPtr<UInputAction> ForwardMove;
+	TObjectPtr<UInputAction> Input_Move;
 
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
-	TObjectPtr<UInputAction> RightMove;
-
-	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
-	TObjectPtr<UInputAction> ControlPitch;
+	TObjectPtr<UInputAction> Input_LookMouse;
 	
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
-	TObjectPtr<UInputAction> ControlYaw;
+	TObjectPtr<UInputAction> Input_Jump;
+
 	
 	virtual void BeginPlay() override;
 
@@ -55,9 +53,10 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void Action_ControllerYaw(const FInputActionValue& Value); 
-	void Action_ControllerPitch(const FInputActionValue& Value);
-	void Action_ForwardMove(const FInputActionValue& Value);
-	void Action_RightMove(const FInputActionValue& Value);
+	void Action_Move(const FInputActionValue& InputValue);
+
+	void Action_LookMouse(const FInputActionValue& InputValue);
+
+	
 
 };
