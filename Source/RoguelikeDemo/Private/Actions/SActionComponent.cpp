@@ -13,15 +13,80 @@ USActionComponent::USActionComponent()
 	// ...
 }
 
-
 // Called when the game starts
 void USActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	for(TSubclassOf<USAction> ActionClass : DefaultAction)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Adding default action: %s"), *ActionClass->GetName())
+		AddAction(ActionClass);
+	}
 	
 }
+
+void USActionComponent::AddAction(TSubclassOf<USAction> ActionClass)
+{
+	if(!ensure(ActionClass))
+	{
+		return;
+	}
+
+	USAction* NewAction = NewObject<USAction>(this, ActionClass);
+
+	if(ensure(NewAction))
+	{
+		Actions.Add(NewAction);
+	}
+}
+
+bool USActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
+{
+	for(USAction* Action : Actions)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Starting action: %s"), *ActionName.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Action found: %s"), *Action->GetName())
+		if(Action)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Action name: %s"), *Action->GetName());
+			if(Action->ActionName == ActionName) //Action->GetName() == ActionName
+			{
+				Action->StartAction(Instigator);
+				return true;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Action name not found"))
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Action Not real"))
+		}
+	}
+
+	return false;
+}
+
+bool USActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
+{
+	for(USAction* Action : Actions)
+	{
+		if(Action && Action->GetName() == ActionName)
+		{
+			Action->StopAction(Instigator);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+
+
+
 
 
 // Called every frame

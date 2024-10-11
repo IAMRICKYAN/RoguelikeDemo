@@ -19,7 +19,9 @@ ASProjectileBase::ASProjectileBase()
 
 	ImpactVFX = CreateDefaultSubobject<UParticleSystem>(TEXT("EffectComp"));
 	/*ImpactVFX->SetupAttachment(SphereComp);*/
-	
+
+	VFXComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("VFXComp"));
+	VFXComp->SetupAttachment(SphereComp);
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	MovementComp->InitialSpeed = 1000.0f;

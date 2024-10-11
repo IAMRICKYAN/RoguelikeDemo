@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Actions/SActionComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SCharacter.generated.h"
 
@@ -24,7 +25,7 @@ public:
 
 protected:
 
-	FTimerHandle AttackTimerHandle;
+	FTimerHandle PrimaryAttackTimerHandle;
 
 	float Intime;
 	
@@ -36,6 +37,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,Category = "Compenents")
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComp;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	TObjectPtr<USActionComponent> ActionComp;
 
 	//Input System
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput")

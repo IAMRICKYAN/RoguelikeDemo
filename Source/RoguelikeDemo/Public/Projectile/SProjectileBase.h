@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly,Category="Effects")
 	TObjectPtr<UParticleSystem> ImpactVFX;
 
+	UPROPERTY(EditDefaultsOnly,Category="Effects")
+	TObjectPtr<UParticleSystemComponent> VFXComp;
+
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 

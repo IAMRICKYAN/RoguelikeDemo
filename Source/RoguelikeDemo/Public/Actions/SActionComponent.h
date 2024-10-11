@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SAction.h"
 #include "Components/ActorComponent.h"
 #include "SActionComponent.generated.h"
 
@@ -12,11 +13,25 @@ class ROGUELIKEDEMO_API USActionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
+	UFUNCTION(BlueprintCallable,Category="Actions")
+	void AddAction(TSubclassOf<USAction> ActionClass);
+
+	UFUNCTION(BlueprintCallable,Category="Actions")
+	bool StartActionByName(AActor* Instigator, FName ActionName);
+
+	UFUNCTION(BlueprintCallable,Category="Actions")
+	bool StopActionByName(AActor* Instigator, FName ActionName);
+	
 	// Sets default values for this component's properties
 	USActionComponent();
 
 protected:
+	UPROPERTY(EditAnywhere,Category="Actions")
+	TArray<TSubclassOf<USAction>> DefaultAction;
+	
+	UPROPERTY()
+	TArray<TObjectPtr<USAction>> Actions;
 	// Called when the game starts
 	virtual void BeginPlay() override;
 

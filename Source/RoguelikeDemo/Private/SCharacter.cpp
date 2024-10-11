@@ -13,17 +13,19 @@ ASCharacter::ASCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArmComp=CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
+	SpringArmComp=CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->bUsePawnControlRotation = true;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 
-	CameraComp=CreateDefaultSubobject<UCameraComponent>("CameraComp");
+	CameraComp=CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
-	SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComp");
+	ActionComp=CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
+
+	SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	SkeletalMeshComp->SetupAttachment(RootComponent);
 
 	
@@ -99,11 +101,23 @@ void ASCharacter::Action_LookMouse(const FInputActionValue& InputValue)
 
 void ASCharacter::Action_PrimaryAttack()
 {
-	PlayAnimMontage(AttackAnim);
-	GetWorldTimerManager().SetTimer(AttackTimerHandle,this,&ASCharacter::Action_PrimaryAttack_Elapsed,Intime);
+	if(ActionComp->StartActionByName(this,"PrimaryAttack"))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Action_PrimaryAttack"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Wrong"));
+
+	}
+	
+	//PlayAnimMontage(AttackAnim);
+	/*
+	GetWorldTimerManager().SetTimer(PrimaryAttackTimerHandle,this,&ASCharacter::Action_PrimaryAttack_Elapsed,Intime);
+*/
 }
 
-void ASCharacter::Action_PrimaryAttack_Elapsed()
+/*void ASCharacter::Action_PrimaryAttack_Elapsed()
 {
 	SpawnProjectile(ProjectileClass);
 }
@@ -151,7 +165,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		// 在世界中生成
 		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
-}
+}*/
 
 
 
