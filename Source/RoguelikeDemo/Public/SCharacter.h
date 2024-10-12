@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "SAttributeComponent.h"
 #include "SInteractionComponent.h"
 #include "Actions/SActionComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,Category = "Components")
 	TObjectPtr<USInteractionComponent> InteractionComp;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components")
+	TObjectPtr<USAttributeComponent> AttributeComp;
 
 	//Input System
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput")
