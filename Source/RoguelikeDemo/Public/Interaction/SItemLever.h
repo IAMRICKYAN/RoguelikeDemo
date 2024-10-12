@@ -25,12 +25,13 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float TargetPitch;
 
+
 protected:
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> BaseMesh;
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> LeverMesh;
 	
 	

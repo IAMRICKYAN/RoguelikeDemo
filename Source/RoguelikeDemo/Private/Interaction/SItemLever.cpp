@@ -16,7 +16,6 @@ ASItemLever::ASItemLever()
 
 	LeverMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LeverMesh"));
 	LeverMesh->SetupAttachment(BaseMesh);
-
 	
 	TargetPitch = 60.0f;
 }

@@ -30,16 +30,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsLidClosed;
 	
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> BaseMesh;
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> LidMesh;
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> Treasure;
 	
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UParticleSystemComponent> VFX;
 	
 	// Called when the game starts or when spawned

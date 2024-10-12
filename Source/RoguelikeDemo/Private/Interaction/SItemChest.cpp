@@ -19,8 +19,12 @@ ASItemChest::ASItemChest()
 
 	Treasure = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Treasure"));
 	Treasure->SetupAttachment(BaseMesh);
+	
 
 	VFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("VFX"));
+	VFX->SetupAttachment(Treasure);
+	VFX->bAutoActivate = false;
+	
 	
 	TargetPitch = 120.f;
 
