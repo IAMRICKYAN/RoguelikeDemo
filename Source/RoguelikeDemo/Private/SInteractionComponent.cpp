@@ -22,30 +22,35 @@ void USInteractionComponent::Interact()
 
 	TObjectPtr<AActor> MyOwner = GetOwner();
 
+	//这里的EyeLocation并不是摄像机的位置信息，而是角色的位置加上角色定义的高度的位置
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 	FVector End = EyeLocation + EyeRotation.Vector() * 1000.0f;
 
-	FHitResult Hit;
-	if (GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams))
+	TArray<FHitResult> Hits;
+	float Radius = 30.0f;
+	FCollisionShape Shape;
+	Shape.SetSphere(Radius);
+	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
+	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	
+	for(FHitResult Hit : Hits)
 	{
-		TObjectPtr<AActor> HitActor = Hit.GetActor();
-		if (HitActor)
+		AActor* HitActor = Hit.GetActor();
+		if(HitActor)
 		{
-			if (HitActor->Implements<USGameplayInterface>())
+			if(HitActor->Implements<USGameplayInterface>())
 			{
 				APawn* MyPawn = Cast<APawn>(MyOwner);
 				ISGameplayInterface::Execute_Interact(HitActor, MyPawn);
-				DrawDebugLine(GetWorld(), EyeLocation, Hit.ImpactPoint, FColor::Green,false,3.0f,0,3);
+				break;
 			}
 		}
-		else
-		{
-			DrawDebugLine(GetWorld(), EyeLocation, Hit.ImpactPoint, FColor::Red,false,3,0,3);
-		}
+		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 	}
+	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 	
 	
 	
