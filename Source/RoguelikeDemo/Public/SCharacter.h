@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "SInteractionComponent.h"
 #include "Actions/SActionComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SCharacter.generated.h"
@@ -41,6 +42,9 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<USActionComponent> ActionComp;
 
+	UPROPERTY(VisibleAnywhere,Category = "Components")
+	TObjectPtr<USInteractionComponent> InteractionComp;
+
 	//Input System
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput")
 	TObjectPtr<UInputMappingContext> InputMappingContext;
@@ -64,6 +68,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TSubclassOf<AActor> ProjectileClass;
 
+	//Interaction
+	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Interaction")
+	TObjectPtr<UInputAction> Input_Interact;
+
 	virtual  void PostInitializeComponents() override;
 	
 	virtual void BeginPlay() override;
@@ -75,13 +83,11 @@ public:
 
 	void Action_Move(const FInputActionValue& InputValue);
 
-	void Action_LookMouse(const FInputActionValue& InputValue);\
+	void Action_LookMouse(const FInputActionValue& InputValue);
 
 	void Action_PrimaryAttack();
 
-	void Action_PrimaryAttack_Elapsed();
-
-	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	void Action_PrimaryInteract();
 	
 
 };

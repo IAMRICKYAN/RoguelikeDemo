@@ -15,7 +15,7 @@ void USAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 {
 
 	Super::StartAction_Implementation(Instigator);
-	if(ACharacter* Character = Cast<ACharacter>(Instigator))
+	if(TObjectPtr<ACharacter> Character = Cast<ACharacter>(Instigator))
 	{
 		Character->PlayAnimMontage(AttackAnim);
 		UGameplayStatics::SpawnEmitterAttached(ImpactVFX, Character->GetMesh(), HandSocketName,FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
@@ -24,7 +24,7 @@ void USAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 		FTimerDelegate Delegate;
 		Delegate.BindUFunction(this, "AttackDelay_Elapsed", Character);
 
-		
+		//GetWorld() 被调用来获取当前 USAction_ProjectileAttack 实例所在的游戏世界（UWorld）的引用。
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle_AttackDelay, Delegate, AttackAnimDelay, false);
 		
 
@@ -47,6 +47,7 @@ void USAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharac
 		// Ignore Player
 		FCollisionQueryParams Params;
 		Params.AddIgnoredActor(InstigatorCharacter);
+
 
 		FCollisionObjectQueryParams ObjParams;
 		ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);

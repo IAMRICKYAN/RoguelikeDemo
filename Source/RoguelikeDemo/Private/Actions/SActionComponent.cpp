@@ -20,7 +20,6 @@ void USActionComponent::BeginPlay()
 
 	for(TSubclassOf<USAction> ActionClass : DefaultAction)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Adding default action: %s"), *ActionClass->GetName())
 		AddAction(ActionClass);
 	}
 	
@@ -45,28 +44,15 @@ bool USActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for(USAction* Action : Actions)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Starting action: %s"), *ActionName.ToString());
-		UE_LOG(LogTemp, Log, TEXT("Action found: %s"), *Action->GetName())
-		if(Action)
+		if(Action && Action->ActionName == ActionName)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Action name: %s"), *Action->GetName());
-			if(Action->ActionName == ActionName) //Action->GetName() == ActionName
-			{
-				Action->StartAction(Instigator);
-				return true;
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Action name not found"))
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Action Not real"))
+			Action->StartAction(Instigator);
+			return true;
+			
 		}
 	}
-
-	return false;
+		return false;
+	
 }
 
 bool USActionComponent::StopActionByName(AActor* Instigator, FName ActionName)

@@ -28,6 +28,8 @@ ASCharacter::ASCharacter()
 	SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	SkeletalMeshComp->SetupAttachment(RootComponent);
 
+	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
+
 	
 }
 
@@ -71,6 +73,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(Input_Move,ETriggerEvent::Triggered,this,&ASCharacter::Action_Move);
 		EnhancedInputComponent->BindAction(Input_Jump,ETriggerEvent::Triggered,this,&ACharacter::Jump);
 		EnhancedInputComponent->BindAction(Input_Attack,ETriggerEvent::Triggered,this,&ASCharacter::Action_PrimaryAttack);
+		EnhancedInputComponent->BindAction(Input_Interact,ETriggerEvent::Triggered,this,&ASCharacter::Action_PrimaryInteract);
 	}
 }
 
@@ -101,71 +104,18 @@ void ASCharacter::Action_LookMouse(const FInputActionValue& InputValue)
 
 void ASCharacter::Action_PrimaryAttack()
 {
-	if(ActionComp->StartActionByName(this,"PrimaryAttack"))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Action_PrimaryAttack"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Wrong"));
-
-	}
-	
-	//PlayAnimMontage(AttackAnim);
-	/*
-	GetWorldTimerManager().SetTimer(PrimaryAttackTimerHandle,this,&ASCharacter::Action_PrimaryAttack_Elapsed,Intime);
-*/
+	ActionComp->StartActionByName(this,"PrimaryAttack");
 }
 
-/*void ASCharacter::Action_PrimaryAttack_Elapsed()
+void ASCharacter::Action_PrimaryInteract()
 {
-	SpawnProjectile(ProjectileClass);
+	if(InteractionComp)
+	{
+		InteractionComp->Interact();
+	}
 }
 
-void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
-{
-	if(ensure(ClassToSpawn))
-	{
-		// 生成角度和坐标
-		// 获取人物模型中手的坐标，GetSocketLocation可以获取骨骼中的插件
-		const FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-		// 未校正前的生成方位
-		// const FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
-		FActorSpawnParameters SpawnParams;
-		// 无论任何情况都生成（无视重叠，碰撞，覆盖...）
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		// 将角色自身作为触发者传入，以便子弹判断正确的交互对象
-		SpawnParams.Instigator = this;
 
-		// 碰撞参数，忽略自身
-		FCollisionQueryParams Params;
-		Params.AddIgnoredActor(this);
-
-		// 获取Camera组件
-		APlayerCameraManager* CurrentCamera = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
-		// 方向是摄像机视角的正前方（屏幕正中央），这里不要把手部模型的坐标传入，方向会偏
-		FVector TraceDirection = CurrentCamera->GetActorForwardVector();
-		// 起始位置是摄像机的位置
-		FVector TraceStart = CurrentCamera->GetCameraLocation();
-		// 终点是一段距离，后面的5000不固定
-		FVector TraceEnd = TraceStart + (TraceDirection * 5000);
-	
-		FHitResult Hit;
-		// Line Trace检测与障碍物的撞击点
-		if (GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_GameTraceChannel1, Params))
-		{
-			// 将撞击点作为方向向量的终点位置
-			TraceEnd = Hit.ImpactPoint;
-		}
-		// 起始点是我们的子弹生成点（手），终点是目标点，获得Rotation
-		FRotator ProjRotation = (TraceEnd - HandLocation).Rotation();
-		// 最终获得校正后的生成方位
-		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
-	
-		// 在世界中生成
-		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
-	}
-}*/
 
 
 

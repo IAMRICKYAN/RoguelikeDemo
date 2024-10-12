@@ -14,7 +14,7 @@ ASProjectileBase::ASProjectileBase()
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	SphereComp->SetCollisionProfileName("Projectile");
-	SphereComp->InitSphereRadius(4.0f);
+	SphereComp->InitSphereRadius(12.0f);
 	RootComponent = SphereComp;
 
 	ImpactVFX = CreateDefaultSubobject<UParticleSystem>(TEXT("EffectComp"));
@@ -34,6 +34,7 @@ ASProjectileBase::ASProjectileBase()
 	MovementComp->bInitialVelocityInLocalSpace = true;
 	MovementComp->Bounciness = 0.3f;
 	MovementComp->ProjectileGravityScale = 0.0f;
+	
 
 	
 }
