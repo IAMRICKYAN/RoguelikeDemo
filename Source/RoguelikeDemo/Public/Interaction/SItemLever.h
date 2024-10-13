@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float TargetPitch;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Components")
+	TObjectPtr<AActor> SelectedActor;
+
 
 protected:
 
@@ -33,6 +36,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UStaticMeshComponent> LeverMesh;
+
 	
 	
 	// Called when the game starts or when spawned
