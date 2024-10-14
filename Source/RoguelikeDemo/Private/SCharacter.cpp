@@ -46,6 +46,7 @@ void ASCharacter::BeginPlay()
 	
 }
 
+
 void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -75,6 +76,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(Input_Jump,ETriggerEvent::Triggered,this,&ACharacter::Jump);
 		EnhancedInputComponent->BindAction(Input_Attack,ETriggerEvent::Triggered,this,&ASCharacter::Action_PrimaryAttack);
 		EnhancedInputComponent->BindAction(Input_Interact,ETriggerEvent::Triggered,this,&ASCharacter::Action_PrimaryInteract);
+		EnhancedInputComponent->BindAction(Input_BlackHoleAttack,ETriggerEvent::Triggered,this,&ASCharacter::Action_BlackHoleAttack);
+		EnhancedInputComponent->BindAction(Input_Dash,ETriggerEvent::Triggered,this,&ASCharacter::Action_Dash);
 	}
 }
 
@@ -108,6 +111,17 @@ void ASCharacter::Action_PrimaryAttack()
 	ActionComp->StartActionByName(this,"PrimaryAttack");
 }
 
+void ASCharacter::Action_BlackHoleAttack()
+{
+	ActionComp->StartActionByName(this,"BlackHole");
+}
+
+void ASCharacter::Action_Dash()
+{
+	ActionComp->StartActionByName(this,"Dash");
+}
+
+
 void ASCharacter::Action_PrimaryInteract()
 {
 	if(InteractionComp)
@@ -128,6 +142,7 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 		}
 	}
 }
+
 
 
 

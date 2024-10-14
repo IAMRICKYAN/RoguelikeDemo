@@ -7,6 +7,9 @@ USAction_ProjectileAttack::USAction_ProjectileAttack()
 {
 	HandSocketName = "Muzzle_01";
 	AttackAnimDelay = 0.2f;
+
+	SweepRadius = 20.0f;
+	SweepDistanceFallback = 5000;
 }
 
 
@@ -42,7 +45,7 @@ void USAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharac
 		SpawnParams.Instigator = InstigatorCharacter;
 
 		FCollisionShape Shape;
-		Shape.SetSphere(20.0f);
+		Shape.SetSphere(SweepRadius);
 
 		// Ignore Player
 		FCollisionQueryParams Params;
@@ -60,7 +63,7 @@ void USAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharac
 		APlayerCameraManager* CurrentCamera = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector TraceDirection = CurrentCamera->GetActorForwardVector();
 		FVector TraceStart = CurrentCamera->GetCameraLocation();
-		FVector TraceEnd = TraceStart + (TraceDirection * 5000);
+		FVector TraceEnd = TraceStart + (TraceDirection * SweepDistanceFallback);
 		FHitResult Hit;
 
 		if (GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_GameTraceChannel1, Params))

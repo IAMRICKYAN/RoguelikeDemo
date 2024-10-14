@@ -33,6 +33,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Effects")
 	TObjectPtr<UParticleSystem> ImpactVFX;
 
+	/* Sphere radius of the sweep to find desired target under crosshair. Adjusts final projectile direction */
+	UPROPERTY(EditAnywhere, Category="Targeting")
+	float SweepRadius;
+
+	/* Fallback distance when sweep finds no collision under crosshair. Adjusts final projectile direction */
+	UPROPERTY(EditAnywhere, Category="Targeting")
+	float SweepDistanceFallback;
+
 	UFUNCTION()
 	void AttackDelay_Elapsed(ACharacter* InstigatorCharacter);
 

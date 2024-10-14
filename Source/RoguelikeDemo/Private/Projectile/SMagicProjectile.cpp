@@ -5,6 +5,21 @@
 
 #include "SAttributeComponent.h"
 
+ASMagicProjectile::ASMagicProjectile()
+{
+	SphereComp->SetSphereRadius(20.0f);
+	DamageAmount = 20.0f;
+}
+
+void ASMagicProjectile::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ASMagicProjectile::OnActorOverlap);
+}
+
+
+
 void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -14,17 +29,10 @@ void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 
 		if(AttributeComp)
 		{
-			AttributeComp->ApplyHealthChanged(-20.0f);
-			UE_LOG(LogTemp, Warning, TEXT("Magic Projectile Hit"));
-
-			Destroy();
+			AttributeComp->ApplyHealthChanged(-DamageAmount);
+			Explode();
 		}
 	}
 }
 
-void ASMagicProjectile::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
 
-	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ASMagicProjectile::OnActorOverlap);
-}

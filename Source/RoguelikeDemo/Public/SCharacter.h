@@ -64,11 +64,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Attack")
 	TObjectPtr<UInputAction> Input_Attack;
 
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
-	TObjectPtr<UAnimMontage> AttackAnim;
+	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Attack")
+	TObjectPtr<UInputAction> Input_BlackHoleAttack;
 
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
-	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Attack")
+	TObjectPtr<UInputAction> Input_Dash;
+
+
 
 	//Interaction
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Interaction")
@@ -77,6 +79,8 @@ protected:
 	virtual  void PostInitializeComponents() override;
 	
 	virtual void BeginPlay() override;
+
+
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -90,6 +94,10 @@ public:
 	void Action_PrimaryAttack();
 
 	void Action_PrimaryInteract();
+
+	void Action_BlackHoleAttack();
+
+	void Action_Dash();
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);

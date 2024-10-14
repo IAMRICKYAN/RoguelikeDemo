@@ -24,8 +24,8 @@ ASProjectileBase::ASProjectileBase()
 	VFXComp->SetupAttachment(SphereComp);
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
-	MovementComp->InitialSpeed = 1000.0f;
-	MovementComp->MaxSpeed = 3000.0f;
+	MovementComp->InitialSpeed = 4000.0f;
+	MovementComp->MaxSpeed = 8000.0f;
 	//这表明物体的旋转将会跟随其速度向量。也就是说，物体将会朝它移动的方向旋转，
 	//这对于模拟例如子弹或者火箭这样的物体是很常见的，这些物体的尾部通常指向它们移动的反方向。
 	MovementComp->bRotationFollowsVelocity = true;
@@ -43,6 +43,7 @@ void ASProjectileBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	SphereComp->OnComponentHit.AddDynamic(this, &ASProjectileBase::OnActorHit);
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
 void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -61,13 +62,13 @@ void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 void ASProjectileBase::Explode_Implementation()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Explode"));
-	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation(),true,EPSCPoolMethod::AutoRelease);
-	Destroy();
-	/*if(ensure(!IsPendingKill()))
+
+	
+	if(ensure(!IsPendingKill()))
 	{
-		
-	}*/
+		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation(),true,EPSCPoolMethod::AutoRelease);
+		Destroy();
+	}
 }
 
 
