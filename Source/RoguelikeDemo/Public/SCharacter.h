@@ -92,6 +92,9 @@ public:
 	void Action_PrimaryAttack();
 
 	void Action_PrimaryInteract();
+
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 	
 
 };

@@ -34,6 +34,11 @@ bool USAttributeComponent::ApplyHealthChanged(float Delta)
 	return true;
 }
 
+bool USAttributeComponent::IsAlive() const
+{
+	return Health > 0.0f;
+}
+
 // Called every frame
 void USAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

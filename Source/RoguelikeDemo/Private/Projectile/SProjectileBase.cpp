@@ -61,11 +61,13 @@ void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Oth
 
 void ASProjectileBase::Explode_Implementation()
 {
-	if(ensure(!IsPendingKill()))
+	UE_LOG(LogTemp, Warning, TEXT("Explode"));
+	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation(),true,EPSCPoolMethod::AutoRelease);
+	Destroy();
+	/*if(ensure(!IsPendingKill()))
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation(),true,EPSCPoolMethod::AutoRelease);
-		Destroy();
-	}
+		
+	}*/
 }
 
 

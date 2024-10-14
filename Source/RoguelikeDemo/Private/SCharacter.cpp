@@ -38,6 +38,7 @@ ASCharacter::ASCharacter()
 void ASCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	AttributeComp->OnHealthChanged.AddDynamic(this,&ASCharacter::OnHealthChanged);
 	Intime =0.2f;
 }
 
@@ -114,6 +115,19 @@ void ASCharacter::Action_PrimaryInteract()
 	if(InteractionComp)
 	{
 		InteractionComp->Interact();
+	}
+}
+
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if(Delta<0.0f && NewHealth <= 0.0f)
+	{
+		TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(GetController());
+		if(PlayerController)
+		{
+			DisableInput(PlayerController);
+		}
 	}
 }
 
