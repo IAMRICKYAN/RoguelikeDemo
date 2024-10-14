@@ -21,8 +21,15 @@ public:
 	USInteractionComponent();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	TObjectPtr<AActor> FocusedActor;
+
+	UFUNCTION(Server, Reliable)
+	void ServerInteract(AActor* InFocus);
+
+	void FindBestInteractable();
+
 
 public:	
 	// Called every frame

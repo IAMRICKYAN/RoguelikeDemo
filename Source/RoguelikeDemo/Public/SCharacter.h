@@ -36,9 +36,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComp;
-
-	UPROPERTY(VisibleAnywhere,Category = "Compenents")
-	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComp;
+	
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<USActionComponent> ActionComp;

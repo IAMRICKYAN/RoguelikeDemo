@@ -24,9 +24,7 @@ ASCharacter::ASCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	ActionComp=CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
-
-	SkeletalMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
-	SkeletalMeshComp->SetupAttachment(RootComponent);
+	
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
 
@@ -53,7 +51,7 @@ void ASCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
+ 
 
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

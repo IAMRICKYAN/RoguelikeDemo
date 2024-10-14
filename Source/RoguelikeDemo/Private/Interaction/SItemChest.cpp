@@ -3,6 +3,7 @@
 
 #include "Interaction/SItemChest.h"
 
+#include "Net/UnrealNetwork.h"
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
@@ -24,9 +25,14 @@ ASItemChest::ASItemChest()
 	VFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("VFX"));
 	VFX->SetupAttachment(Treasure);
 	VFX->bAutoActivate = false;
-	
-	
+
+	bIsLidClosed = true;
 	TargetPitch = 120.f;
+
+	SetReplicates(true);
+	
+	
+
 
 }
 
@@ -34,33 +40,20 @@ void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
 	ISGameplayInterface::Interact_Implementation(InstigatorPawn);
 	bIsLidClosed = !bIsLidClosed;
-	LidOpened();
+	OnRep_LidOpend();
 }
 
-void ASItemChest::LidOpened()
+void ASItemChest::OnRep_LidOpend()
 {
 	float CurrentPitch = bIsLidClosed ? TargetPitch : 0.f;
 	LidMesh->SetRelativeRotation(FRotator(CurrentPitch, 0, 0));
 }
 
 
-
-
-
-
-
-
-// Called when the game starts or when spawned
-void ASItemChest::BeginPlay()
+void ASItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::BeginPlay();
-	
-}
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-// Called every frame
-void ASItemChest::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	DOREPLIFETIME(ASItemChest, bIsLidClosed);
 }
 

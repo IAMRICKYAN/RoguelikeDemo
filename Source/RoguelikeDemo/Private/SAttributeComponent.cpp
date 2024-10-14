@@ -10,7 +10,8 @@ USAttributeComponent::USAttributeComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	Health = 100;
+	MaxHealth = 120;
+	Health = MaxHealth;
 	
 }
 
@@ -27,9 +28,12 @@ void USAttributeComponent::BeginPlay()
 
 bool USAttributeComponent::ApplyHealthChanged(float Delta)
 {
-	Health += Delta;
+	float OldHealth = Health;
+	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
-	OnHealthChanged.Broadcast(nullptr,this, Health,Delta);
+	float ActualDelta = Health - OldHealth;
+\
+	OnHealthChanged.Broadcast(nullptr,this, Health,ActualDelta);
 	
 	return true;
 }
@@ -38,6 +42,17 @@ bool USAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
 }
+
+bool USAttributeComponent::IsFullHealth() const
+{
+	return Health >= MaxHealth;
+}
+
+float USAttributeComponent::GetHealthMax() const
+{
+	return MaxHealth;
+}
+
 
 // Called every frame
 void USAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

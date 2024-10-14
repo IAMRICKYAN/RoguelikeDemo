@@ -15,7 +15,41 @@ USInteractionComponent::USInteractionComponent()
 	// ...
 }
 
+// Called every frame
+void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	TObjectPtr<APawn> MyPawn = Cast<APawn>(GetOwner());
+	if(MyPawn->IsLocallyControlled())
+	{
+		FindBestInteractable();
+	}
+}
+
+
 void USInteractionComponent::Interact()
+{
+
+	ServerInteract(FocusedActor);
+	
+}
+
+void USInteractionComponent::ServerInteract_Implementation(AActor* InFocus)
+{
+
+	if(InFocus == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No Focus Actor to interact.");
+		return;
+	}
+	
+	APawn* MyPawn = CastChecked<APawn>(GetOwner());
+	ISGameplayInterface::Execute_Interact(InFocus, MyPawn);
+}
+
+
+void USInteractionComponent::FindBestInteractable()
 {
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
@@ -34,7 +68,9 @@ void USInteractionComponent::Interact()
 	FCollisionShape Shape;
 	Shape.SetSphere(Radius);
 	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
-	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	//FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+
+	FocusedActor = nullptr;
 	
 	for(FHitResult Hit : Hits)
 	{
@@ -43,35 +79,16 @@ void USInteractionComponent::Interact()
 		{
 			if(HitActor->Implements<USGameplayInterface>())
 			{
-				APawn* MyPawn = Cast<APawn>(MyOwner);
-				ISGameplayInterface::Execute_Interact(HitActor, MyPawn);
+				/*APawn* MyPawn = Cast<APawn>(MyOwner);
+				ISGameplayInterface::Execute_Interact(HitActor, MyPawn);*/
+				FocusedActor = HitActor;
 				break;
 			}
 		}
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
+		//DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 	}
-	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+	//DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 	
 	
-	
-}
-
-
-// Called when the game starts
-void USInteractionComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 

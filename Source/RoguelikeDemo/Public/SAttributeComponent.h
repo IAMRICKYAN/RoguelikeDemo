@@ -36,6 +36,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsFullHealth() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealthMax() const;
 	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

@@ -22,12 +22,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float TargetPitch;
 
-	UFUNCTION()
-	void LidOpened();
-
 protected:
 
-	UPROPERTY(BlueprintReadOnly)
+	UFUNCTION()
+	void OnRep_LidOpend();
+
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing="OnRep_LidOpend")
 	bool bIsLidClosed;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
@@ -42,11 +42,5 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<UParticleSystemComponent> VFX;
 	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };
