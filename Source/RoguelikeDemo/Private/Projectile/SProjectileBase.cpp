@@ -3,6 +3,7 @@
 
 #include "Projectile/SProjectileBase.h"
 
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -21,7 +22,10 @@ ASProjectileBase::ASProjectileBase()
 	/*ImpactVFX->SetupAttachment(SphereComp);*/
 
 	VFXComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("VFXComp"));
-	VFXComp->SetupAttachment(SphereComp);
+	VFXComp->SetupAttachment(RootComponent);
+
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(RootComponent);
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	MovementComp->InitialSpeed = 4000.0f;
@@ -34,8 +38,9 @@ ASProjectileBase::ASProjectileBase()
 	MovementComp->bInitialVelocityInLocalSpace = true;
 	MovementComp->Bounciness = 0.3f;
 	MovementComp->ProjectileGravityScale = 0.0f;
-	
 
+	ImpactShakeInnerRadius = 0.0f;
+	ImpactShakeOuterRadius = 1500.0f;
 	
 }
 
@@ -67,6 +72,9 @@ void ASProjectileBase::Explode_Implementation()
 	if(ensure(!IsPendingKill()))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation(),true,EPSCPoolMethod::AutoRelease);
+		UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation());
+		UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
+
 		Destroy();
 	}
 }

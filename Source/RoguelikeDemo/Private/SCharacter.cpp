@@ -81,6 +81,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	}
 }
 
+
 void ASCharacter::Action_Move(const FInputActionValue& InputValue)
 {
 	FRotator ControlRot = GetControlRotation();
@@ -97,6 +98,7 @@ void ASCharacter::Action_Move(const FInputActionValue& InputValue)
 	//左右移动
 	const FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 	AddMovementInput(RightVector,AxisValue.X);
+
 }
 
 void ASCharacter::Action_LookMouse(const FInputActionValue& InputValue)
