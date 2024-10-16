@@ -30,6 +30,7 @@ ASCharacter::ASCharacter()
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 
+	TimeToHitParamName = "TimeToHit";
 	
 }
 
@@ -135,6 +136,14 @@ void ASCharacter::Action_PrimaryInteract()
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
 	float Delta)
 {
+
+	if (Delta < 0.0f)
+	{
+		
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+		UE_LOG(LogTemp,Warning,TEXT("Health Changed: %s, %f, %f"),*GetName(),NewHealth,Delta);
+	}
+	
 	if(Delta<0.0f && NewHealth <= 0.0f)
 	{
 		TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(GetController());

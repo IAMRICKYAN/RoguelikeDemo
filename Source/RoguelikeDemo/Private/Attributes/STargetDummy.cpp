@@ -13,6 +13,7 @@ ASTargetDummy::ASTargetDummy()
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 
+	TimeToHitParamName = "TimeToHit";
 }
 
 void ASTargetDummy::PostInitializeComponents()
@@ -41,7 +42,7 @@ void ASTargetDummy::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 {
 	if (Delta < 0.0f)
 	{
-		MeshComp->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+		MeshComp->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 	}
 }
 

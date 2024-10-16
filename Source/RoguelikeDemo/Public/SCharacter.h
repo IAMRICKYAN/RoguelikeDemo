@@ -30,6 +30,9 @@ protected:
 	FTimerHandle PrimaryAttackTimerHandle;
 
 	float Intime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
 	
 	UPROPERTY(VisibleAnywhere,Category = "Components" )
 	TObjectPtr<USpringArmComponent> SpringArmComp;

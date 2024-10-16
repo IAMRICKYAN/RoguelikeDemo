@@ -19,6 +19,10 @@ public:
 	virtual void PostInitializeComponents() override;
 
 protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	FName TimeToHitParamName;
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USAttributeComponent> AttributeComp;
 
