@@ -73,6 +73,11 @@ float USAttributeComponent::GetHealthMax() const
 	return MaxHealth;
 }
 
+float USAttributeComponent::GetHealth()
+{
+	return Health;
+}
+
 
 // Called every frame
 void USAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
