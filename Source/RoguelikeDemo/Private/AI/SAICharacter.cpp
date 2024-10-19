@@ -64,6 +64,17 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 			SetTargetActor(InstigatorActor);
 		}
 
+		// Create once, and skip creating if its an instant kill
+		if (ActiveHealthBar == nullptr && NewHealth > 0.0)
+		{
+			ActiveHealthBar = CreateWidget<USWorldUserWidget>(GetWorld(), HealthBarWidgetClass);
+			if (ActiveHealthBar)
+			{
+				ActiveHealthBar->AttachedActor = this;
+				ActiveHealthBar->AddToViewport();
+			}
+		}
+
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 
 		if (NewHealth <= 0.0f)

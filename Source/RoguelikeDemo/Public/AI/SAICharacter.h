@@ -6,6 +6,7 @@
 #include "SAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
+#include "UI/SWorldUserWidget.h"
 #include "SAICharacter.generated.h"
 
 UCLASS()
@@ -18,6 +19,13 @@ public:
 	ASAICharacter();
 
 protected:
+
+	UPROPERTY()
+	TObjectPtr<USWorldUserWidget> ActiveHealthBar;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USAttributeComponent> AttributeComp;
 
