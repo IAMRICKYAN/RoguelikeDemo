@@ -133,6 +133,12 @@ void ASCharacter::Action_PrimaryInteract()
 	}
 }
 
+void ASCharacter::HealSelf(float amount)
+{
+	AttributeComp->ApplyHealthChanged(this,amount);
+}
+
+
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
 	float Delta)
 {
@@ -152,6 +158,7 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 		}
 	}
 }
+
 
 
 

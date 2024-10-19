@@ -53,6 +53,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealth();
+
+	UFUNCTION(BlueprintCallable)
+	bool Kill(AActor* InstigatorActor);
 	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

@@ -101,6 +101,9 @@ public:
 	void Action_BlackHoleAttack();
 
 	void Action_Dash();
+
+	UFUNCTION(Exec)
+	void HealSelf(float amount = 100);
 	
 
 	UFUNCTION()

@@ -25,6 +25,12 @@ protected:
 	UPROPERTY()
 	TObjectPtr<AActor> FocusedActor;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Trace")
+	float TraceRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Trace")
+	float TraceDistance;
+
 	UFUNCTION(Server, Reliable)
 	void ServerInteract(AActor* InFocus);
 

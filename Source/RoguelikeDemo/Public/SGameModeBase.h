@@ -30,6 +30,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	UCurveFloat* DifficultyCurve;
 
+	UFUNCTION(Exec)
+	void KillAll();
+
+
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
 
