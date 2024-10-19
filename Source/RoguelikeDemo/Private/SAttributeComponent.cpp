@@ -10,7 +10,7 @@ USAttributeComponent::USAttributeComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	MaxHealth = 120;
+	MaxHealth = 300;
 	Health = MaxHealth;
 	
 }
@@ -26,14 +26,14 @@ void USAttributeComponent::BeginPlay()
 }
 
 
-bool USAttributeComponent::ApplyHealthChanged(float Delta)
+bool USAttributeComponent::ApplyHealthChanged(AActor* InstigatorActor,float Delta)
 {
 	float OldHealth = Health;
 	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
 	float ActualDelta = Health - OldHealth;
-\
-	OnHealthChanged.Broadcast(nullptr,this, Health,ActualDelta);
+
+	OnHealthChanged.Broadcast(InstigatorActor,this, Health,ActualDelta);
 	
 	return ActualDelta != 0;
 }
@@ -43,9 +43,29 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
+bool USAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	TObjectPtr<USAttributeComponent> AttributeComp =GetAttributes(Actor);
+	if(AttributeComp)
+	{
+		return AttributeComp->IsAlive();
+	}
+	
+	return false;
+}
+
 bool USAttributeComponent::IsFullHealth() const
 {
 	return Health >= MaxHealth;
+}
+
+USAttributeComponent* USAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if(FromActor)
+	{
+		return Cast<USAttributeComponent>(FromActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+	}
+	return nullptr;
 }
 
 float USAttributeComponent::GetHealthMax() const

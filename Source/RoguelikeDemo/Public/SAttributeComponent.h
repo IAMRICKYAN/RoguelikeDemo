@@ -22,7 +22,8 @@ protected:
 	float Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
-	float MaxHealth;	
+	float MaxHealth;
+	
 	
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -32,13 +33,20 @@ public:
 	FOnHealthChanged OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChanged(float Delta);
+	bool ApplyHealthChanged(AActor* InstigatorActor,float Delta);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;
 
 	UFUNCTION(BlueprintCallable)
 	bool IsFullHealth() const;
+
+	
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static USAttributeComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
+	static bool IsActorAlive(AActor* Actor);
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealthMax() const;

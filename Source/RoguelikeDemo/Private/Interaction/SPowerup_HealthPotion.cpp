@@ -26,7 +26,7 @@ void ASPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth())
 	{
 		// 只在成功治疗时进入冷却
-		if (AttributeComp->ApplyHealthChanged(AttributeComp->GetHealthMax()))
+		if (AttributeComp->ApplyHealthChanged(this,AttributeComp->GetHealthMax()))
 		{
 			HideAndCooldownPowerup();
 		}

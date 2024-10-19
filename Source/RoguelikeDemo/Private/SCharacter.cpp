@@ -141,7 +141,6 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 	{
 		
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
-		UE_LOG(LogTemp,Warning,TEXT("Health Changed: %s, %f, %f"),*GetName(),NewHealth,Delta);
 	}
 	
 	if(Delta<0.0f && NewHealth <= 0.0f)
