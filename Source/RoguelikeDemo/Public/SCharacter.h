@@ -63,6 +63,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
 	TObjectPtr<UInputAction> Input_Jump;
 
+	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Basic")
+	TObjectPtr<UInputAction> Input_Sprint;
+
 	//Attack
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput|Attack")
 	TObjectPtr<UInputAction> Input_Attack;
@@ -101,6 +104,10 @@ public:
 	void Action_BlackHoleAttack();
 
 	void Action_Dash();
+
+	void Action_SprintStart();
+
+	void Action_SprintStop();
 
 	UFUNCTION(Exec)
 	void HealSelf(float amount = 100);

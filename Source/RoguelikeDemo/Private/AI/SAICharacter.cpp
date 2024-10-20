@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/PawnSensingComponent.h"
 
 // Sets default values
@@ -23,6 +25,8 @@ ASAICharacter::ASAICharacter()
 	TargetActorKey = "TargetActor";
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	//GetMesh()->SetGenerateOverlapEvents(true);
 
 }
 
@@ -89,6 +93,9 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 			// ragdoll
 			GetMesh()->SetAllBodiesSimulatePhysics(true);
 			GetMesh()->SetCollisionProfileName("Ragdoll");
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			GetCharacterMovement()->DisableMovement();
 
 			// set lifespan
 			SetLifeSpan(8.0f);

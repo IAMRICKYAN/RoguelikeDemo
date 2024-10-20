@@ -79,6 +79,10 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(Input_Interact,ETriggerEvent::Triggered,this,&ASCharacter::Action_PrimaryInteract);
 		EnhancedInputComponent->BindAction(Input_BlackHoleAttack,ETriggerEvent::Triggered,this,&ASCharacter::Action_BlackHoleAttack);
 		EnhancedInputComponent->BindAction(Input_Dash,ETriggerEvent::Triggered,this,&ASCharacter::Action_Dash);
+		
+		EnhancedInputComponent->BindAction(Input_Sprint, ETriggerEvent::Started, this, &ASCharacter::Action_SprintStart);
+		EnhancedInputComponent->BindAction(Input_Sprint, ETriggerEvent::Completed, this, &ASCharacter::Action_SprintStop);
+
 	}
 }
 
@@ -122,6 +126,16 @@ void ASCharacter::Action_BlackHoleAttack()
 void ASCharacter::Action_Dash()
 {
 	ActionComp->StartActionByName(this,"Dash");
+}
+
+void ASCharacter::Action_SprintStart()
+{
+	ActionComp->StartActionByName(this,"Sprint");
+}
+
+void ASCharacter::Action_SprintStop()
+{
+	ActionComp->StopActionByName(this,"Sprint");
 }
 
 

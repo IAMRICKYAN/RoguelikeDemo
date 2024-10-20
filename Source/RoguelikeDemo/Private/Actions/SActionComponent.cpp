@@ -59,7 +59,7 @@ bool USActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 {
 	for(USAction* Action : Actions)
 	{
-		if(Action && Action->GetName() == ActionName)
+		if(Action && Action->ActionName == ActionName)
 		{
 			Action->StopAction(Instigator);
 			return true;

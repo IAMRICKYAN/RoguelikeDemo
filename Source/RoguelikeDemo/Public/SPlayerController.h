@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerController.h"
 #include "SPlayerController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPawnChanged, APawn*, NewPawn);
+
+
 /**
  * 
  */
@@ -13,5 +16,10 @@ UCLASS()
 class ROGUELIKEDEMO_API ASPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+
+protected:
+	UPROPERTY(BlueprintAssignable)
+	FOnPawnChanged OnPawnChanged;
 	
 };

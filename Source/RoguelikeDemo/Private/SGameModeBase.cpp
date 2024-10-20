@@ -3,6 +3,7 @@
 
 #include "SGameModeBase.h"
 #include "EngineUtils.h"
+#include "SCharacter.h"
 #include "AI/SAICharacter.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
@@ -105,5 +106,36 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 	}
 	
 }
+
+void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+	ASCharacter* Player = Cast<ASCharacter>(VictimActor);
+
+	if(Player)
+	{
+		FTimerHandle TimerHandle_RespawnDelay;
+
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+
+		float RespawnDelay = 2.0f;
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, RespawnDelay, false);
+	}
+	
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+
+	
+}
+
+void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if (ensure(Controller))
+	{
+		Controller->UnPossess();
+		RestartPlayer(Controller);
+	}
+}
+
+
 
 

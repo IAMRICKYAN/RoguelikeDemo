@@ -4,6 +4,7 @@
 #include "Projectile/SMagicProjectile.h"
 
 #include "SAttributeComponent.h"
+#include "SGameplayFunctionLibrary.h"
 
 ASMagicProjectile::ASMagicProjectile()
 {
@@ -23,13 +24,11 @@ void ASMagicProjectile::PostInitializeComponents()
 void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                        UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(OtherActor)
+	if(OtherActor && OtherActor != GetInstigator())
 	{
-		TObjectPtr<USAttributeComponent> AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
-
-		if(AttributeComp)
+		// Apply Damage & Impulse
+		if (USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
 		{
-			AttributeComp->ApplyHealthChanged(GetInstigator(),-DamageAmount);
 			Explode();
 		}
 	}
