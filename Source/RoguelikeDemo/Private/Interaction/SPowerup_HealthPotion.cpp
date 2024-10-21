@@ -4,10 +4,12 @@
 #include "Interaction/SPowerup_HealthPotion.h"
 
 #include "SAttributeComponent.h"
+#include "SPlayerState.h"
 
 
 ASPowerup_HealthPotion::ASPowerup_HealthPotion()
 {
+	CreditCost = 50;
 }
 
 
@@ -25,10 +27,14 @@ void ASPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	// 检查使用者是否生命值已满
 	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth())
 	{
-		// 只在成功治疗时进入冷却
-		if (AttributeComp->ApplyHealthChanged(this,AttributeComp->GetHealthMax()))
+		if(ASPlayerState* PS = InstigatorPawn->GetPlayerState<ASPlayerState>())
 		{
-			HideAndCooldownPowerup();
+			// 只在成功治疗时进入冷却
+			if (PS->RemoveCredits(CreditCost) && AttributeComp->ApplyHealthChanged(this, AttributeComp->GetHealthMax()))
+			{
+				HideAndCooldownPowerup();
+			}
+			
 		}
 	}
 }

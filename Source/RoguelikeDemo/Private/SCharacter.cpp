@@ -4,6 +4,7 @@
 #include "RoguelikeDemo/Public/SCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -165,11 +166,13 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 	
 	if(Delta<0.0f && NewHealth <= 0.0f)
 	{
-		TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(GetController());
-		if(PlayerController)
-		{
-			DisableInput(PlayerController);
-		}
+			APlayerController* PC = Cast<APlayerController>(GetController());
+
+			DisableInput(PC);
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			SetLifeSpan(5.0f);
+		
 	}
 }
 

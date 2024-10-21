@@ -94,7 +94,7 @@ float USAttributeComponent::GetHealthMax() const
 	return MaxHealth;
 }
 
-float USAttributeComponent::GetHealth()
+float USAttributeComponent::GetHealth() const
 {
 	return Health;
 }

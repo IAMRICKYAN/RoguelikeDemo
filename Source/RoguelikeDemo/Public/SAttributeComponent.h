@@ -48,11 +48,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
 	static bool IsActorAlive(AActor* Actor);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealthMax() const;
 
-	UFUNCTION(BlueprintCallable)
-	float GetHealth();
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetHealth() const;
 
 	UFUNCTION(BlueprintCallable)
 	bool Kill(AActor* InstigatorActor);

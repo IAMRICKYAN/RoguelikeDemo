@@ -32,6 +32,11 @@ protected:
 	USActionComponent* GetOwningComponent() const;
 	
 public:
+
+	/* 当我们将这个技能添加到ActionComponent中时自动执行 */
+	UPROPERTY(EditDefaultsOnly, Category = "Action")
+	bool bAutoStart;
+	
 	UFUNCTION(BlueprintNativeEvent,Category="Action")
 	void StartAction(AActor* Instigator);
 

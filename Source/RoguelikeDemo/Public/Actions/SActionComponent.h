@@ -16,7 +16,10 @@ class ROGUELIKEDEMO_API USActionComponent : public UActorComponent
 
 public:
 	UFUNCTION(BlueprintCallable,Category="Actions")
-	void AddAction(TSubclassOf<USAction> ActionClass);
+	void AddAction(AActor* Instigator,TSubclassOf<USAction> ActionClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void RemoveAction(USAction* ActionToRemove);
 
 	UFUNCTION(BlueprintCallable,Category="Actions")
 	bool StartActionByName(AActor* Instigator, FName ActionName);

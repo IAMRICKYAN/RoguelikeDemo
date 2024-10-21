@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "Actions/SActionEffect.h"
 #include "Projectile/SProjectileBase.h"
 #include "SMagicProjectile.generated.h"
 
@@ -17,6 +18,8 @@ class ROGUELIKEDEMO_API ASMagicProjectile : public ASProjectileBase
 
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<USActionEffect> BurningActionClass;
 
 	UPROPERTY(EditAnywhere, Category = "Damage")
 	float DamageAmount;
