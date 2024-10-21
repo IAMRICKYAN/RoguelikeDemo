@@ -5,6 +5,7 @@
 
 #include "SAttributeComponent.h"
 #include "SGameplayFunctionLibrary.h"
+#include "Actions/SActionComponent.h"
 
 ASMagicProjectile::ASMagicProjectile()
 {
@@ -26,6 +27,17 @@ void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	if(OtherActor && OtherActor != GetInstigator())
 	{
+
+		USActionComponent* ActionComp = Cast<USActionComponent>(OtherActor->GetComponentByClass(USActionComponent::StaticClass()));
+		if (ActionComp && ActionComp->ActiveGameplayTags.HasTag(ParryTag))
+		{
+			MovementComp->Velocity = -MovementComp->Velocity;
+
+			SetInstigator(Cast<APawn>(OtherActor));
+			return;
+		}
+		
+		
 		// Apply Damage & Impulse
 		if (USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
 		{

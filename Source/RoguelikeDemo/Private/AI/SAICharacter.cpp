@@ -20,6 +20,8 @@ ASAICharacter::ASAICharacter()
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 
+	ActionComp = CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
+
 	TimeToHitParamName = "TimeToHit";
 
 	TargetActorKey = "TargetActor";

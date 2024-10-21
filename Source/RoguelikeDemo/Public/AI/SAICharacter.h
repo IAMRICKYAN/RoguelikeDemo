@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SAttributeComponent.h"
+#include "Actions/SActionComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 #include "UI/SWorldUserWidget.h"
@@ -31,6 +32,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UPawnSensingComponent> PawnSensingComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USActionComponent* ActionComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName TimeToHitParamName;
